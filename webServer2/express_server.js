@@ -39,12 +39,16 @@ app.get("/urls", (req, res) => {
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
 });
-
+//W2D3
 app.get("/urls/:id", (req, res) => {
-  let templateVars = { shortURL: req.params.id, urls: urlDatabase};
+  let longUrl = urlDatabase[req.params.id]
+  let templateVars = { shortURL: req.params.id, urls: urlDatabase, longUrl: longUrl};
+  console.log(longUrl)
+  console.log(req.params.id)
+  //res.send("Ok");
   res.render("urls_show", templateVars);
 });
-
+//W2D3
 const bodyParser = require("body-parser");
 app.use(bodyParser.urlencoded({extended: true}));
 
@@ -55,6 +59,21 @@ app.post("/urls", (req, res) => {
   // console.log(req.body.longURL);  // debug statement to see POST parameters
   res.send("Ok");         // Respond with 'Ok' (we will replace this)
 });
+
+//W2D3 - Delete route
+app.post("/urls/:id/delete", (req, res) => {
+  var deleteID = req.params.id;
+  delete urlDatabase[deleteID];
+  res.render('/urls_show');
+});
+
+//W2D3 - update route
+app.post("/urls/:id/update", (req, res) => {
+  var updateID = req.params.id;
+  //update urlDatabase[updateID];
+  res.redirect('/urls_show');
+});
+
 
 app.get("/hello", (req, res) => {
   res.end("<html><body>Hello <b>World</b></body></html>\n");
